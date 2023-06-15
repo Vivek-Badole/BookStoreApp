@@ -44,7 +44,6 @@ const UpdateProduct = () => {
       console.log(error);
     }
   };
-  console.log(author,rating);
   useEffect(() => {
     getSingleProduct();
     //eslint-disable-next-line

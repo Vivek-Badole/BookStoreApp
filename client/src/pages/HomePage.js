@@ -87,7 +87,7 @@ const HomePage = () => {
     if (value) {
       all.push(id);
     } else {
-      all = all.filter((c) => c !== id);
+       all = all.filter((c) => {});
     }
     setChecked(all);
   };

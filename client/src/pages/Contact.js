@@ -10,6 +10,7 @@ const Contact = () => {
             src="/images/contactus.jpeg"
             alt="contactus"
             style={{ width: "100%" }}
+            loading="lazy"
           />
         </div>
         <div className="col-md-4">

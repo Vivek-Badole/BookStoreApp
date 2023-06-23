@@ -151,6 +151,7 @@ const HomePage = () => {
         </div>
         <div className="col-md-9 offset-md-3 two mt-4 productsss">
           <h1 className="text-center mt-5">All Products</h1>
+         { (checked.length > 0 || radio.length > 0) && (products.length === 0 ? <h2  className="text-center mt-5" style={{color:"red"}}>No Product Found</h2> : "")}
           <div className="d-flex flex-wrap">
             {products?.map((p) => (
               <div className="card m-4" key={p._id}>
@@ -219,14 +220,7 @@ const HomePage = () => {
                   setPage(page + 1);
                 }}
               >
-                {loading ? (
-                  "Loading ..."
-                ) : (
-                  <>
-                    {" "}
                     Loadmore <AiOutlineReload />
-                  </>
-                )}
               </button>
             )} </> : (<h1 className="text-center text-danger" >Currently Unavailable</h1>) }
            

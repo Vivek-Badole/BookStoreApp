@@ -76,6 +76,7 @@ const Orders = () => {
                   alt={p?.name}
                   width="30px"
                   height="200px"
+                    loading="lazy"
                 /> }
                         </div>
                         <div className="col-md-8">

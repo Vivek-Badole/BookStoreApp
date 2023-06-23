@@ -108,6 +108,7 @@ const CartPage = () => {
                       alt={p.name}
                       width="100%"
                       height={"130px"}
+                        loading="lazy"
                     />
                   </div>
                   <div className="col-md-4">

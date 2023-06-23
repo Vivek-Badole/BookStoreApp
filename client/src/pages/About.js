@@ -10,6 +10,7 @@ const About = () => {
             src="/images/about.jpeg"
             alt="contactus"
             style={{ width: "100%" }}
+            loading="lazy"
           />
         </div>
         <div className="col-md-4">

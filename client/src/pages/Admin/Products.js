@@ -54,6 +54,7 @@ const Products = () => {
                   className="card-img-top"
                   alt={p.name}
                   height={300}
+                    loading="lazy"
                 /> }
                   <div className="card-body">
                     <h5 className="card-title">{loading ? <Skeleton width={120} /> : p.name.substring(0, 40)}</h5>

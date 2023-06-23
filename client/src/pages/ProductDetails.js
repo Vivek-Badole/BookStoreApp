@@ -63,6 +63,7 @@ const ProductDetails = () => {
                     alt={product.name}
                     height="500"
                     width={"350px"}
+                    loading="lazy"
                   /> }
         </div>
         <div className="col-md-6 product-details-info">
@@ -116,6 +117,7 @@ const ProductDetails = () => {
                     src={`/api/v1/product/product-photo/${p._id}`}
                     className="card-img-top"
                     alt={p.name}
+                    loading="lazy"
                   /> }
               <div className="card-body">
                 <div className="card-name-price">

@@ -6,7 +6,7 @@ import { useCart } from "../context/cart";
 import axios from "axios";
 import toast from "react-hot-toast";
 import Layout from "./../components/Layout/Layout";
-import { AiOutlineReload,AiTwotoneStar} from "react-icons/ai";
+import { AiOutlineReload,AiTwotoneStar} from "react-icons/ai"; 
 import "../styles/Homepage.css";
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
@@ -18,6 +18,7 @@ const HomePage = () => {
   const navigate = useNavigate();
   const [cart, setCart] = useCart();
   const [products, setProducts] = useState([]);
+  const [filteredProducts, setFilteredProducts] = useState([]);
   const [categories, setCategories] = useState([]);
   const [checked, setChecked] = useState([]);
   const [radio, setRadio] = useState([]);
@@ -75,6 +76,7 @@ const HomePage = () => {
       const { data } = await axios.get(`/api/v1/product/product-list/${page}`);
       setLoading(false);
       setProducts([...products, ...data?.products]);
+      // setFilteredProducts([...filteredProducts, ...data?.products]);
     } catch (error) {
       console.log(error);
       setLoading(false);
@@ -85,12 +87,14 @@ const HomePage = () => {
   const handleFilter = (value, id) => {
     let all = [...checked];
     if (value) {
-      all.push(id);
+      all.push(id);  
     } else {
-       all = all.filter((c) => {});
+      //all = all.filter((c) => {});
+      all = all.filter((c) => c !== id);
     }
     setChecked(all);
   };
+ 
   useEffect(() => {
     if (!checked.length || !radio.length) getAllProducts();
   }, [checked.length, radio.length]);
@@ -106,7 +110,7 @@ const HomePage = () => {
         checked,
         radio,
       });
-      setProducts(data?.products);
+      setFilteredProducts(data?.products);
       setTotal(data?.products.length)
     } catch (error) {
       console.log(error);
@@ -115,6 +119,7 @@ const HomePage = () => {
 
   return (
     <Layout title={"All Books - Best offers "}>
+      
      
       <div className="container-fluid row mt-3 home-page">
         <div className="col-md-3 filters fixed-top one products1">
@@ -151,8 +156,65 @@ const HomePage = () => {
         </div>
         <div className="col-md-9 offset-md-3 two mt-4 productsss">
           <h1 className="text-center mt-5">All Products</h1>
-         { (checked.length > 0 || radio.length > 0) && (products.length === 0 ? <h2  className="text-center mt-5" style={{color:"red"}}>No Product Found</h2> : "")}
-          <div className="d-flex flex-wrap">
+          { (checked.length > 0 || radio.length > 0) && (filteredProducts.length === 0 && <h2  className="text-center mt-5" style={{color:"red"}}>No Product Found</h2> )}
+          {(checked.length > 0 || radio.length > 0) ? <div className="d-flex flex-wrap">
+            {filteredProducts?.map((p) => (
+              <div className="card m-4" key={p._id}>
+               {loading ? (
+                        <Skeleton
+                            width="100%"
+                            height={300}
+                        />
+                    ) : <img
+                  src={`/api/v1/product/product-photo/${p._id}`}
+                  className="card-img-top"
+                  alt={p.name}
+                  loading="lazy"
+                /> }
+                <div className="card-body">
+                  <div className="card-name-price">
+                    <h6 className="card-title">{loading ? <Skeleton width={120} /> : <>{p.name.substring(0, 20)}...</>}</h6>
+                    <h6 className="card-title card-price">
+                      {loading ? <Skeleton width={60}/> : p.price.toLocaleString("en-US", {
+                        style: "currency",
+                        currency: "USD",
+                      })}
+                    </h6>
+                  </div>
+                  <p className="card-text ">
+                    {loading ? <Skeleton count={3} /> : <>{p.description.substring(0, 60)}...</>}
+                  </p>
+                  <div className="card-name-price">
+                    <h6 className="card-titles">{loading ? <Skeleton width={120} /> : <><SiBookstack />  {p.quantity}M</>}</h6>
+                    <h6 className="card-title card-rating">
+                      {loading ? <Skeleton width={60}/> : <> <AiTwotoneStar />  {p.rating}</>}
+                    </h6>
+                  </div>
+                  <div className="card-name-price">
+                    {loading ? <Skeleton width={100} height={35} /> : <button
+                      className="btn btn-info ms-1"
+                      onClick={() => navigate(`/product/${p.slug}`)}
+                    >
+                      More Details
+                    </button>}
+                    {loading ? <Skeleton width={100} height={35} /> : <button
+                      className="btn btn-dark ms-1"
+                      onClick={() => {
+                        setCart([...cart, p]);
+                        localStorage.setItem(
+                          "cart",
+                          JSON.stringify([...cart, p])
+                        );
+                        toast.success("Item Added to cart");
+                      }}
+                    >
+                      ADD TO CART
+                    </button> }
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div> : <> <div className="d-flex flex-wrap">
             {products?.map((p) => (
               <div className="card m-4" key={p._id}>
                {loading ? (
@@ -164,7 +226,7 @@ const HomePage = () => {
                   src={`/api/v1/product/product-photo/${p._id}`}
                   className="card-img-top"
                   alt={p.name}
-loading="lazy"
+                  loading="lazy"
                 /> }
                 <div className="card-body">
                   <div className="card-name-price">
@@ -212,8 +274,8 @@ loading="lazy"
           </div>
           
           <div className="m-2 p-3">
-          {products.length > 0 ? 
-           <> {products && products.length < total && (
+           
+            {products && products.length < total && (
               <button
                 className="btn loadmore"
                 onClick={(e) => {
@@ -223,9 +285,9 @@ loading="lazy"
               >
                     Loadmore <AiOutlineReload />
               </button>
-            )} </> : (<h1 className="text-center text-danger" >Currently Unavailable</h1>) }
+            )} 
            
-          </div>
+          </div></>}
         </div>
         
       </div>

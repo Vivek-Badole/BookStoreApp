@@ -156,7 +156,7 @@ const HomePage = () => {
         </div>
         <div className="col-md-9 offset-md-3 two mt-4 productsss">
           <h1 className="text-center mt-5">All Products</h1>
-          { (checked.length > 0 || radio.length > 0) && (filteredProducts.length === 0 && <h2  className="text-center mt-5" style={{color:"red"}}>No Product Found</h2> )}
+          { (checked.length > 0 || radio.length > 0) && ((!loading && filteredProducts.length === 0 ) && <h2  className="text-center mt-5" style={{color:"red"}}>No Product Found</h2> )}
           {(checked.length > 0 || radio.length > 0) ? <div className="d-flex flex-wrap">
             {filteredProducts?.map((p) => (
               <div className="card m-4" key={p._id}>
